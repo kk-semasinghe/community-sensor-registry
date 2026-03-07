@@ -2,24 +2,77 @@ name: Registry Validation
 
 on:
   pull_request:
-    paths:
-      - "sensor-registry.json"
-      - "scripts/validate_registry.py"
+    types: [opened, synchronize, reopened]
 
 jobs:
   validate:
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest]
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Analyze changed files
+        id: changed
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE_SHA="${{ github.event.pull_request.base.sha }}"
+          HEAD_SHA="${{ github.event.pull_request.head.sha }}"
+          mapfile -t changed_files < <(git diff --name-only "$BASE_SHA" "$HEAD_SHA")
+          echo "Changed files:"
+          printf ' - %s\n' "${changed_files[@]}"
+
+          registry_changed=false
+          invalid_files=()
+          for file in "${changed_files[@]}"; do
+            [[ -z "$file" ]] && continue
+            if [[ "$file" == "sensor-registry.json" ]]; then
+              registry_changed=true
+            fi
+            if [[ "$file" != "sensor-registry.json" ]]; then
+              invalid_files+=("$file")
+            fi
+          done
+
+          {
+            echo "registry_changed=$registry_changed"
+            if [[ ${#invalid_files[@]} -gt 0 ]]; then
+              echo "invalid_files<<EOF"
+              printf '%s\n' "${invalid_files[@]}"
+              echo "EOF"
+            else
+              echo "invalid_files="
+            fi
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Reject fork PRs with non-registry file changes
+        if: github.event.pull_request.head.repo.fork == true && steps.changed.outputs.invalid_files != ''
+        shell: bash
+        run: |
+          echo "Fork PRs can only change sensor-registry.json."
+          echo "These files are not allowed:"
+          echo "${{ steps.changed.outputs.invalid_files }}"
+          exit 1
+
+      - name: Skip validation when registry file is unchanged
+        if: steps.changed.outputs.registry_changed != 'true'
+        run: echo "sensor-registry.json not changed; skipping registry validation."
+
       - name: Set up Python
+        if: steps.changed.outputs.registry_changed == 'true'
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+
+      - name: Install dependencies
+        if: steps.changed.outputs.registry_changed == 'true'
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r code_generator/requirements.txt
+
       - name: Validate registry packages
+        if: steps.changed.outputs.registry_changed == 'true'
         run: |
           python scripts/validate_registry.py sensor-registry.json
-
