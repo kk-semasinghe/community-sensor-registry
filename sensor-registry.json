@@ -1,5 +1,11 @@
 {
   "packages": [
-    
+      {
+      "name": "DHT22_good",
+      "version": "1.0.0",
+      "description": "My sensor package",
+      "url": "https://github.com/kk-semasinghe/community_dh22_good/releases/download/1.0.0/community_dh22_good-main.zip",
+      "sha256": "1882577799b4a1bec6c93fd24844b7b4796e3c957d2177de369842be41403327"
+      }
   ]
 }
