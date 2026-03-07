@@ -1,18 +1,5 @@
 {
   "packages": [
-    {
-      "name": "community-ssd1306",
-      "version": "v-1",
-      "description": "SSD1306 community display package",
-      "url": "https://github.com/k-k-semasinghe/community-ssd1306/releases/download/v-1/community-ssd1306-main.zip",
-      "sha256": ""
-    },
-    {
-      "name": "community-bme280",
-      "version": "1.0.3",
-      "description": "BME280 community package",
-      "url": "https://github.com/k-k-semasinghe/community-bme280/releases/download/v1.0.3/community-bme280-main.zip",
-      "sha256": ""
-    }
+    
   ]
 }
