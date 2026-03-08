@@ -6,6 +6,13 @@
         "description": "Sensor good",
         "url": "https://github.com/kk-semasinghe/DH-22-good/releases/download/1.0.0/DH-22-good-main.zip",
         "sha256": "520d0793b99278856093a78bdbaf6f753bef3ade043c58347e0cdf5e3f345526"
+     },
+     {
+        "name": "serial_hello",
+        "version": "1.0.0",
+        "description": "Serial-Hello",
+        "url": "https://github.com/kk-semasinghe/community-serial-hello-pkg/releases/download/1.0.0/community-serial-hello-pkg-main.zip",
+        "sha256": "7226308cf4e0c95dd614fb62eec39abd96ff3bea29f7c9b8167faea8a15c8856"
      }
   ]
 }
