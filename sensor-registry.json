@@ -13,6 +13,13 @@
         "description": "Serial-Hello",
         "url": "https://github.com/kk-semasinghe/community-serial-hello-pkg/releases/download/1.0.0/community-serial-hello-pkg-main.zip",
         "sha256": "7226308cf4e0c95dd614fb62eec39abd96ff3bea29f7c9b8167faea8a15c8856"
+     },
+    {
+        "name": "Counting_in_serial",
+        "version": "1.0.0",
+        "description": "Counting on serial",
+        "url": "https://github.com/kk-semasinghe/community-serial-counter/releases/download/1.0.0/community-serial-counter-main.zip",
+        "sha256": "b3a065594e215b4da7be4712edbce2dc409f854b3fcf3c26f4286cb1a2d1f068"
      }
   ]
 }
